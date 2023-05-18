@@ -1,13 +1,11 @@
+#include <iostream>
 #include <string>
-#include <thread>
-#include <fstream>
-
 #include "FileSubject.h"
 
 int main() {
-    std::string filepath = "D:\\test.txt";
-    FileSubject fileSubject(filepath);
-    fileSubject.Monitor();
-
+    std::setlocale(LC_ALL, "Russian");
+    std::string filepath = "D:\\test.txt";  // Путь к файлу
+    FileSubject fileSubject(filepath);  // Создаем объект FileSubject с указанным путем
+    fileSubject.Monitor();  // Запускаем мониторинг файла
     return 0;
 }
