@@ -1,22 +1,42 @@
-#ifndef MYFILE_H
-#define MYFILE_H
+#include <iostream>
+#include <fstream>
+#include "MyFile.h"
+#include <locale>
 
-#include <string>
-#include "Observer.h"
+MyFile::MyFile(std::string path_) : path(path_), size(0), exist(false) {
+    std::ifstream fileStream(path_);  // Открываем файл для чтения
+    if (fileStream) {  // Если файл успешно открыт
+        exist = true;  // Устанавливаем флаг существования файла в true
+        fileStream.seekg(0, std::ios::end);  // Перемещаем указатель в конец файла
+        size = fileStream.tellg();  // Получаем текущую позицию указателя, которая является размером файла
+    }
+}
 
-class MyFile : public Observer {
-private:
-    std::string path;    // Путь к файлу
-    int size;            // Размер файла
-    bool exist;          // Флаг существования файла
+void MyFile::UpdateExist(bool exist_) {
+    setlocale(LC_ALL, "Russian");
+    exist = exist_;  // Обновляем значение флага существования файла
+    if (exist) {
+        std::cout << "File now exist" << std::endl;  // Если файл существует, выводим сообщение
+    } else {
+        std::cout << "File now doesn't exist" << std::endl;  // Если файл не существует, выводим сообщение
+    }
+}
 
-public:
-    MyFile(std::string path_);      // Конструктор класса MyFile
-    void UpdateExist(bool exist_) override;  // Метод для обновления состояния существования файла
-    void UpdateSize(int size_) override;     // Метод для обновления размера файла
-    std::string getPath() const;             // Метод для получения пути к файлу
-    int getSize() const;                     // Метод для получения размера файла
-    bool getExist() const;                   // Метод для получения состояния существования файла
-};
+void MyFile::UpdateSize(int size_) {
+    if (exist) {  // Если файл существует
+        size = size_;  // Обновляем размер файла
+        std::cout << "File size is " << size << " bytes now" << std::endl;  // Выводим сообщение о новом размере файла
+    }
+}
 
-#endif // MYFILE_H
+std::string MyFile::getPath() const {
+    return path;  // Возвращаем путь к файлу
+}
+
+int MyFile::getSize() const {
+    return size;  // Возвращаем размер файла
+}
+
+bool MyFile::getExist() const {
+    return exist;  // Возвращаем флаг существования файла
+}
